@@ -2,7 +2,8 @@ let fs = require('fs');
 let arg = process.argv;
 let inText;
 
-function FindEntropy (string){
+function FindEntropy (string)
+{
 	let entropy = 0;
 	let numberOfLetters = 0;
 	let alphabet = [];
@@ -27,7 +28,8 @@ function FindEntropy (string){
 }
 
 fs.readFile(arg[2], (err, data) => {
-	if (err){
+	if (err)
+	{
 		console.error('Sorry, You did something wrong..')
 		console.error(err.message)
 		return;
