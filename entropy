@@ -1,0 +1,43 @@
+let fs = require('fs');
+let arg = process.argv;
+let inText;
+
+function FindEntropy (string){
+	let entropy = 0;
+	let numberOfLetters = 0;
+	let alphabet = [];
+	for (let i=0; i<string.length; i++)
+  {
+		if (alphabet[string.charAt(i)] == null)
+			alphabet[string.charAt(i)] = 0;
+		alphabet[string.charAt(i)]++;
+	}
+	for (let i in alphabet)
+  {
+		alphabet[i] /= string.length;
+		numberOfLetters++;
+	}
+	for (let i in alphabet)
+  {
+		entropy -= alphabet[i] * Math.log2(alphabet[i]);
+	}
+	if (numberOfLetters == 1) entropy = 0;
+	else entropy /= Math.log2(numberOfLetters);
+	return entropy;
+}
+
+fs.readFile(arg[2], (err, data) => {
+	if (err){
+		console.error('Sorry, You did something wrong..')
+		console.error(err.message)
+		return;
+	}
+	if (data == '')
+  {
+		console.log('This file is empty, sorry :(');
+		return;
+	}
+	console.log(data.toString());
+	inText = data.toString();
+	console.log(FindEntropy(inText));  
+});
