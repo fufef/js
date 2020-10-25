@@ -1,0 +1,48 @@
+let fs = require('fs');
+let arg = process.argv;
+
+function code (inText){
+	let i = 0, n = 1;
+	let result = '';
+	while (i < inText.length){
+		while (inText.charAt(i) == inText.charAt(i + n))
+			n++;
+		let nJump = n;
+		while (n >= 127){
+			result += '#' + String.fromCharCode(127) + inText.charAt(i);
+			n -= 127;
+		}
+		if ((n > 3) || (inText.charAt(i) == '#'))
+			result += '#' + String.fromCharCode(n) + inText.charAt(i);
+		else
+			for (let k = 0; k < n; k++)
+				result += inText.charAt(i);
+		i += nJump;
+		n = 1;
+	}
+	return result;
+}
+
+function decode (inText){
+	let i = 0, result = '';
+	while (i < inText.length){
+		if (inText[i] == '#'){
+			for (let j = 0; j < inText[i+1].charCodeAt(0); j++)
+				result += inText[i + 2];
+			i += 2;
+		}
+		else 
+			result += inText[i];
+		i++;
+	}
+	return result;
+}
+
+let inputFile = arg[3], outputFile = arg[4];
+let inText = fs.readFileSync(inputFile).toString();
+let outText;
+if (arg[2] == 'code')
+	outText = code(inText);
+else if (arg[2] == 'decode')
+	outText = decode(inText);
+fs.writeFileSync(outputFile, outText);
