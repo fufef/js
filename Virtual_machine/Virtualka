@@ -1,0 +1,96 @@
+let fs = require('fs');
+let arg = process.argv;
+let mem = new Array();
+
+let text = fs.readFileSync(arg[2]);
+text = text.toString();
+
+mem = text.split(/\r\n| /);
+for (let i = 0; i < mem.length; i++)
+	console.log(i, mem[i])
+
+ip = 0;
+
+let readlineSync = require('readline-sync');
+
+while (ip < mem.length){
+	if (mem[ip] == undefined)
+		break;
+	switch(mem[ip]){
+		case 'input':
+			var number = readlineSync.question('');
+			mem[mem[ip + 1]] = Number.parseInt(number);
+			ip += 2;
+			break;
+		case 'output':
+			console.log(mem[mem[ip + 1]]);
+			ip += 2;
+			break;
+		case 'set':
+			mem[mem[ip + 1]] = Number.parseInt(mem[ip + 2]);
+			ip += 3;
+			break;
+		case 'add':
+			mem[mem[ip + 3]] = mem[mem[ip + 1]] + mem[mem[ip + 2]];
+			ip += 4;
+			break;
+		case 'sub':
+			mem[mem[ip + 3]] = mem[mem[ip + 1]] - mem[mem[ip + 2]];
+			ip += 4;
+			break;
+		case 'mult':
+			mem[mem[ip + 3]] = mem[mem[ip + 1]] * mem[mem[ip + 2]];
+			ip += 4;
+			break;
+		case 'div':
+			if (mem[mem[ip + 2]] != 0){
+				mem[mem[ip + 3]] = mem[mem[ip + 1]] / mem[mem[ip + 2]];
+			}
+			else
+				console.log('Attention! Division by zero!');
+			ip += 4;
+			break;
+		case 'jmp':
+			ip = Number.parseInt(mem[ip + 1]);
+			break;
+		case 'jnz':
+			if (mem[mem[ip + 1]] == 0){
+				ip += 3;
+				break;
+			}
+			else {
+				ip = Number.parseInt(mem[ip + 2]);
+				break;
+			}
+		case 'jz':
+			if (mem[mem[ip + 1]] != 0){
+				ip += 3;
+				break;
+			}
+			else {
+				ip = Number.parseInt(mem[ip + 2]);
+				break;
+			}
+		case 'jeq':
+			if (mem[mem[ip + 1]] != mem[mem[ip + 2]]){
+				ip += 4;
+				break;
+			}
+			else {
+				ip = Number.parseInt(mem[ip + 3]);
+				break;
+			}
+		case 'jless':
+			if (mem[mem[ip + 1]] > mem[mem[ip + 2]]){
+				ip += 4;
+				break;
+			}
+			else {
+				ip = Number.parseInt(mem[ip + 3]);
+				break;
+			}
+		
+	}
+}
+
+console.log('Thanks for using our fuf-language!');
