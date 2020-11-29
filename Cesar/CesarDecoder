@@ -1,0 +1,54 @@
+let fs = require('fs');
+let arg = process.argv;
+let text = fs.readFileSync(arg[2],'utf8');
+text = text.toString();
+let outputFile = arg[3];
+let outText = '';
+//без учета буквы ё
+
+let counter = 0;
+let freq = new Array();
+for (let i = 0; i < 32; i++)
+	freq.push(0);
+
+for (let i = 0; i < text.length; i++)
+{
+	let code = text.charCodeAt(i);
+	if (code < 1104 && code > 1039)
+	{
+		counter++;
+		let s = 0;
+		if (code < 1072)
+			s = 1040;
+		else
+			s = 1072; 
+		freq[(code - s) % 32]++;
+	}
+}
+for (let i = 0; i < 32; i++)
+	freq[i] /= counter;
+
+let max = 0;
+for (let i = 0; i < 32; i++)
+	if (freq[i] > freq[max])
+		max = i;
+
+let cesarShift = max - 14;
+
+for (let i = 0; i < text.length; i++)
+{
+	let code = text.charCodeAt(i);
+	if (code < 1104 && code > 1039)
+	{
+		let s = 0;
+		if (code < 1072)
+			s = 1040;
+		else
+			s = 1072; 
+		outText += String.fromCharCode((code - s - cesarShift % 32 + 32) % 32 + s);
+	}
+	else
+		outText += text[i];
+}
+console.log(cesarShift);
+fs.writeFileSync(outputFile, outText);
