@@ -1,0 +1,9 @@
+set 100 1
+input 100
+set 101 -1
+set 102 1
+jz 100 25
+mult 100 102 102
+add 100 101 100
+jnz 100 14
+output 102
