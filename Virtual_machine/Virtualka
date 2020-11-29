@@ -14,7 +14,7 @@ ip = 0;
 let readlineSync = require('readline-sync');
 
 while (ip < mem.length){
-	if (mem[ip] == undefined)
+	if (!mem[ip])
 		break;
 	switch(mem[ip]){
 		case 'input':
