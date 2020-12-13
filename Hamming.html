@@ -1,0 +1,56 @@
+<html>
+<head>
+<title>hemmeing code</title>
+<script>
+function code(){
+	let mes = document.getElementById('inpMessage').value;
+	mes = mes.split('');
+	for(let i = 0; i < mes.length; i++)
+		mes[i] *= 1;
+	let control = new Array();
+	control.push((mes[0] + mes[1] + mes[3])%2);
+	control.push((mes[1] + mes[2] + mes[3])%2);
+	control.push((mes[0] + mes[2] + mes[3])%2);
+	document.getElementById('codedMessage').value = mes.join('') + control.join('');
+}
+
+function f(m){
+	return (m[0] + m[1] + m[3])%2 == m[4] 
+	&& (m[1] + m[2] + m[3])%2 == m[5]
+	&& (m[0] + m[2] + m[3])%2 == m[6];
+}
+
+function decode(){
+	let mes = document.getElementById('codedMessage').value;
+	mes = mes.split('');
+	let demes = new Array(7);
+	for(let i = 0; i < mes.length; i++){
+		mes[i] *= 1;
+		demes[i] = mes[i];
+	}
+	document.getElementById('placeOfError').textContent = "placeOfError: No errors";
+	if (!f(demes))
+		for (let i = 0; i < 7; i++){
+			demes[i] = !mes[i] * 1;
+			if (!f(demes))
+				demes[i] = mes[i];
+			else{
+				document.getElementById('placeOfError').textContent = "placeOfError:" + (i + 1);
+				break;
+			}
+		}
+	document.getElementById('decodedMessage').value = demes.join('');
+}
+
+</script>
+</head>
+<body>
+<h1>Hemming code</h1>
+<p> <input type='text' id='inpMessage'> Type the message </p>
+<p> <input type='button' value='code' onClick='code()'> </p>
+<p> <input type='text' id='codedMessage'> Coded message </p>
+<p> <input type='button' value='decode' onClick='decode()'> </p>
+<p> <input type='text' id='decodedMessage'> Decoded message </p>
+<p> <span id='placeOfError'> placeOfError: </span> </p>
+</body>
+</html>
