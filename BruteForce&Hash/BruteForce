@@ -20,6 +20,4 @@ if (res.length > 0)
 	console.log('Indexes are:');
 else
 	console.log('There are no matches in text');
-for (let j = 0; j < res.length; j++){
-	console.log(res[j]);
-}
+console.log(res[j]);
