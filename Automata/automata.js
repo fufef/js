@@ -20,18 +20,16 @@ for (let j = 0; j < m; j++){
 let indexes = new Array();
 let q = 0;
 for (let i = 0; i < text.length; i++)
-	for (let j in alph)
-		if (text.charAt(i) == j)
-		{
-			q = del[q][j];
-			if (q == m)
-				indexes.push(i - m + 1);
-			break;
-		}
+	if (del[q][text.charAt(i)] == 0 || del[q][text.charAt(i)])
+	{
+		q = del[q][text.charAt(i)];
+		if (q == m)
+			indexes.push(i - m + 1);
+	}
+
 if (indexes.length > 0)
 	console.log('Indexes are:');
 else
 	console.log('There are no matches in text');
-for (let i = 0; i < indexes.length; i++){
+for (let i = 0; i < indexes.length; i++)
 	console.log(indexes[i]);
-}
